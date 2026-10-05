@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="ja">
-<!-- @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot'))) -->
-<!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 
 <head>
     <meta charset="UTF-8">
+    @vite('resources/css/app.css')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ユーザー登録</title>
 </head>
 
 <body>
+    @if ($errors->any())
+    <div>
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <h1>ユーザー登録</h1>
 
     <form method="POST" action="/register">
@@ -21,16 +30,6 @@
                 id="name"
                 name="name"
                 value="{{ old('name') }}"
-                required>
-        </div>
-
-        <div>
-            <label for="email">メールアドレス</label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                value="{{ old('email') }}"
                 required>
         </div>
 

@@ -3,6 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
+    @vite('resources/css/app.css')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ログイン</title>
 </head>
 
@@ -23,12 +26,12 @@
         @csrf
 
         <div>
-            <label for="email">メールアドレス</label>
+            <label for="name">ユーザ名</label>
             <input
-                type="email"
-                id="email"
-                name="email"
-                value="{{ old('email') }}"
+                type="name"
+                id="name"
+                name="name"
+                value="{{ old('name') }}"
                 required>
         </div>
 
