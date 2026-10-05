@@ -17,6 +17,8 @@
                 <div class="mb-6">
                     <label for="title" class="block font-medium mb-2"> 本のタイトル </label>
                     <input type="text" id="title" name="title" value="{{ old('title') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2" placeholder="タイトルを入力してください">
+                    <label for="body" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2" placeholder="最初の文章を入力してください">最初の文章</label>
+                    <textarea id="body" name="body"></textarea>
                     @error('title')
                     <p class="text-red-500 text-sm mt-2"> {{ $message }} </p>
                     @enderror
