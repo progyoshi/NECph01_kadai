@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('sentences', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('book_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('sentences')->restrictOnDelete();
+            $table->string('body', 100);
             $table->timestamps();
         });
     }
