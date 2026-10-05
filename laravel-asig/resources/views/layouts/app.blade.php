@@ -9,7 +9,7 @@
 </head>
 
 <body class="min-h-screen bg-[#f3f1e9] text-[#303a32] antialiased selection:bg-[#c8d2c3]">
-    <div class="min-h-screen bg-[radial-gradient(ellipse_at_top,_rgba(129,143,119,0.13),_transparent_52%)]">
+    <div class="min-h-screen background-image: radial-gradient(ellipse at top, rgba(129,143,119,0.13), transparent 52%">
         @include('layouts.navigation')
         <main class="mx-auto max-w-6xl px-6 py-10 sm:px-8 sm:py-14">
             @yield('content')

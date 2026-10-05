@@ -1,8 +1,8 @@
 <article class="relative {{ $depth > 0 ? 'ml-4 border-l-2 border-emerald-200 pl-5 sm:ml-8 sm:pl-7' : '' }} {{ $depth > 0 ? 'mt-4' : '' }}">
-    <span class="absolute -left-[7px] top-5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 shadow-sm" aria-hidden="true"></span>
+    <span class="absolute top-5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 shadow-sm" aria-hidden="true"></span>
 
     <div class="rounded-xl border border-emerald-100 bg-emerald-50/50 p-4 transition hover:border-emerald-200 hover:bg-emerald-50 sm:p-5">
-        <p class="whitespace-pre-wrap leading-7 text-stone-800">{{ $sentence->body }}</p>
+        <p class="whitespace-pre-wrap wrap-break-word leading-7 text-stone-800">{{ $sentence->body }}</p>
 
         <div class="mt-4 flex flex-col gap-3 border-t border-emerald-100 pt-3 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-sm text-stone-500">

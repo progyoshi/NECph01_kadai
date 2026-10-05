@@ -56,9 +56,9 @@ class BookController extends Controller
         return view('books.create');
     }
 
-    public function edit(Book $book)
+    public function edit(Request $request, Book $book)
     {
-        abort_unless((int) auth()->id() === (int) $book->user_id, 403);
+        abort_unless((int) $request->user()->getAuthIdentifier() === (int) $book->user_id, 403);
 
         return view('books.edit', [
             'book' => $book,
@@ -67,7 +67,7 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
-        abort_unless((int) $request->user()->id === (int) $book->user_id, 403);
+        abort_unless((int) $request->user()->getAuthIdentifier() === (int) $book->user_id, 403);
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:39'],
@@ -82,10 +82,9 @@ class BookController extends Controller
 
     public function destroy(Request $request, Book $book)
     {
-        abort_unless((int) $request->user()->id === (int) $book->user_id, 403);
+        abort_unless((int) $request->user()->getAuthIdentifier() === (int) $book->user_id, 403);
 
         DB::transaction(function () use ($book) {
-            // Remove the tree links first because sentence parent references restrict deletion.
             $book->sentences()->update(['parent_id' => null]);
             $book->sentences()->delete();
             $book->delete();
