@@ -8,17 +8,9 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth');
-
-Route::get(
-    '/books/{book}/sentences/{sentence}/create',
-    [SentenceController::class, 'create']
-)->name('books.sentences.create')->middleware('auth');
-
 Route::middleware('auth')->group(function () {
-    Route::resource('books', BookController::class);
+    Route::get('/dashboard', [BookController::class, 'index'])->name('dashboard');
+    Route::resource('books', BookController::class)->except(['index']);
     Route::scopeBindings()->group(function () {
         Route::get(
             '/books/{book}/sentences/{sentence}/create',

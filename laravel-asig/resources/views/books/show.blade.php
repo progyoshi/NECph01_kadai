@@ -1,21 +1,25 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite('resources/css/app.css')
-    <title>{{ $book->title }} | 文章の木</title>
-</head>
+@section('title', $book->title . ' | 文章の木')
 
-<body class="min-h-screen bg-stone-50 text-stone-800">
-    <main class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-        <header class="mb-8 rounded-2xl border border-emerald-100 bg-white p-6 shadow-sm sm:p-8">
-            <p class="mb-2 text-sm font-medium tracking-wide text-emerald-700">みんなで育てる物語</p>
-            <h1 class="text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl">{{ $book->title }}</h1>
+@section('content')
+    <div class="mx-auto max-w-4xl">
+        <header class="mb-8 rounded-2xl border border-[#dcded4] bg-white p-6 shadow-sm sm:p-8">
+            <p class="mb-2 text-sm font-medium tracking-wide text-[#71836f]">みんなで育てる物語</p>
+            <h1 class="text-3xl font-bold tracking-tight text-[#303a32] sm:text-4xl">{{ $book->title }}</h1>
+            @if ((int) auth()->id() === (int) $book->user_id)
+                <div class="mt-5 flex flex-wrap gap-3 border-t border-[#e5e7df] pt-5">
+                    <a href="{{ route('books.edit', $book) }}" class="rounded-lg border border-[#cfd4c9] px-4 py-2 text-sm font-medium text-[#536054] transition hover:bg-[#f3f5ef]">タイトルを編集</a>
+                    <form method="POST" action="{{ route('books.destroy', $book) }}" onsubmit="return confirm('この本と、投稿された文章をすべて削除します。よろしいですか？');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="rounded-lg border border-rose-200 px-4 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-50">本を削除</button>
+                    </form>
+                </div>
+            @endif
         </header>
 
-        <section aria-label="文章一覧" class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-8">
+        <section aria-label="文章一覧" class="rounded-2xl border border-[#dcded4] bg-white p-5 shadow-sm sm:p-8">
             @forelse ($sentences as $sentence)
             @include('sentences._tree', [
             'book' => $book,
@@ -29,7 +33,5 @@
             </div>
             @endforelse
         </section>
-    </main>
-</body>
-
-</html>
+    </div>
+@endsection

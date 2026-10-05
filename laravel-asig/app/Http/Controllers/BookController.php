@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class BookController extends Controller
 {
@@ -44,11 +44,53 @@ class BookController extends Controller
 
     public function index()
     {
-        return view('books.index');
+        $books = Book::query()->latest()->get();
+
+        return view('dashboard', [
+            'books' => $books,
+        ]);
     }
 
     public function create()
     {
         return view('books.create');
+    }
+
+    public function edit(Book $book)
+    {
+        abort_unless((int) auth()->id() === (int) $book->user_id, 403);
+
+        return view('books.edit', [
+            'book' => $book,
+        ]);
+    }
+
+    public function update(Request $request, Book $book)
+    {
+        abort_unless((int) $request->user()->id === (int) $book->user_id, 403);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:39'],
+        ]);
+
+        $book->update([
+            'title' => $validated['title'],
+        ]);
+
+        return redirect()->route('books.show', $book);
+    }
+
+    public function destroy(Request $request, Book $book)
+    {
+        abort_unless((int) $request->user()->id === (int) $book->user_id, 403);
+
+        DB::transaction(function () use ($book) {
+            // Remove the tree links first because sentence parent references restrict deletion.
+            $book->sentences()->update(['parent_id' => null]);
+            $book->sentences()->delete();
+            $book->delete();
+        });
+
+        return redirect()->route('dashboard')->with('status', '本を削除しました。');
     }
 }
